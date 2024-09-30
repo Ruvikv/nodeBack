@@ -24,10 +24,10 @@ app.use(express.json());
 app.get('/oficina/idOficina', async (req, res) => {
     try{
 
-        const idReclamoTipo = req.params.idReclamoTipo
+        const idOficina = req.params.idReclamoTipo
 
         const sql = 'SELECT * FROM reclamos INNER JOIN oficinas ON reclamos.idReclamoTipo = oficinas.idReclamoTipo WHERE idOficina = ?;'
-        const [result] = await db.query(sql, [idReclamoTipo]);
+        const [result] = await db.query(sql, [idOficina]);
 
         if (result.lenght === 0){
             res.status(404).json({mensaje: 'Reclamo no encontrado'})
@@ -44,8 +44,27 @@ app.get('/oficina/idOficina', async (req, res) => {
 
 
 //Modificar Reclamos estado oficina
-app.patch('/oficina/idReclamoTipo', async (req, res) => {
+app.patch('/oficina/idReclamo', async (req, res) => {
+    try {
 
+        const {idReclamoEstado} = req.body;
 
-    sql = 'SELECT * FROM reclamos INNER JOIN oficinas ON reclamos.idReclamoTipo = oficinas.idReclamoTipo INNER JOIN reclamosestado ON reclamos.idReclamoEstado = reclamosestado.idReclamoEstado WHERE oficinas.idOficina = 2;'
+        if (!idReclamoEstado) {
+            return res.status(400).json({message: 'Debe proporcionar un estado de reclamo'});
+        }
+
+        const idReclamo = req.params.idReclamo;
+
+        const sql = 'UPDATE reclamos SET idreclamoestado = ?  WHERE idreclamo = ?;'
+        const [result] = await conexionDB.query(sql,[idReclamoEstado,idReclamo])
+
+        res.status(200).json({
+            mensaje: 'Estado del reclamo modificado correctamente'
+        })
+
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).json({estado: false, mensaje: 'Error interno'})
+    }    
 })
