@@ -1,5 +1,4 @@
 import express from 'express';
-
 import ReclamosEstadosController from '../../controllers/ReclamosEstadosController.js';
 
 const router = express.Router();

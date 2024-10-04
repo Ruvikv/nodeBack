@@ -8,8 +8,8 @@ export default class Reclamos{
                         r.idReclamoTipo, rt.descripcion AS "Descripción Tipo", 
                         u.nombre AS "Creado por"
                         FROM reclamos AS r
-                        INNER JOIN reclamos_tipo AS rt ON rt.idReclamoTipo = r.idReclamoTipo
-                        INNER JOIN reclamos_estado AS re ON re.idReclamoEstado = r.idReclamoEstado
+                        INNER JOIN reclamostipo AS rt ON rt.idReclamoTipo = r.idReclamoTipo
+                        INNER JOIN reclamosestado AS re ON re.idReclamoEstado = r.idReclamoEstado
                         INNER JOIN usuarios AS u ON u.idUsuario = r.idUsuarioCreador;`
 
         const [result] = await conexionDB.query(sql);

@@ -77,7 +77,7 @@ app.post('/notificacion', (req, res) => {
 
 
 // GET
-app.get('/reclamos-estado', async (req, res) => {
+app.get('/reclamosestado', async (req, res) => {
     try {
         const sql = 'SELECT * FROM `reclamosestado` WHERE activo = 1;'
 
@@ -93,7 +93,7 @@ app.get('/reclamos-estado', async (req, res) => {
 
 
 // GET ID
-app.get('/reclamos-estado/:idReclamoEstado', async (req, res) => {
+app.get('/reclamosestado/:idReclamoEstado', async (req, res) => {
     try {
         const idReclamoEstado = req.params.idReclamoEstado;
 
@@ -118,7 +118,7 @@ app.get('/reclamos-estado/:idReclamoEstado', async (req, res) => {
 });
 
 //PATCH
-app.patch('/reclamos-estado/:idReclamoEstado', async (req, res) =>{
+app.patch('/reclamosestado/:idReclamoEstado', async (req, res) =>{
     try{
         const { descripcion, activo } = req.body;
 
@@ -160,7 +160,7 @@ app.patch('/reclamos-estado/:idReclamoEstado', async (req, res) =>{
 
 
 // POST
-app.post('/reclamos-estado', async (req, res) => {
+app.post('/reclamosestado', async (req, res) => {
     try{
 
         const {descripcion, activo} = req.body
@@ -199,7 +199,7 @@ app.post('/reclamos-estado', async (req, res) => {
 
 
 // Delete
-app.delete('/reclamos-estado/:idReclamoEstado', async (req, res) => {
+app.delete('/reclamosestado/:idReclamoEstado', async (req, res) => {
     try{
 
         const idReclamoEstado = req.params.idReclamoEstado;
@@ -234,7 +234,7 @@ app.delete('/reclamos-estado/:idReclamoEstado', async (req, res) => {
 
 
 
-app.use('/api/v1/reclamos-estados', v1ReclamosEstadoRouter);
+app.use('/api/v1/reclamosestado', v1ReclamosEstadoRouter);
 app.use('/api/v1/reclamos', v1ReclamosRouter);
 
 const puerto = process.env.PUERTO
