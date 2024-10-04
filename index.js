@@ -5,19 +5,24 @@ import handlebars from 'handlebars';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-
-
 import { conexionDB } from './db/conexion.js';
+// middlewares
+import validateContentType from './middlewares/validateContentType.js';
 
-
-
+// rutas
+import { router as  v1ReclamosEstadoRouter } from './v1/routes/reclamosEstadosRoutes.js';
+import { router as v1ReclamosRouter } from './v1/routes/reclamosRoutes.js';
 
 dotenv.config()
 
 
 const app = express();
 app.use(express.json());
+app.use(validateContentType);
 
+app.get('/', (req, res) => {
+    res.json({'estado':true});
+});
 
 
 app.post('/notificacion', (req, res) => {
@@ -229,7 +234,8 @@ app.delete('/reclamos-estado/:idReclamoEstado', async (req, res) => {
 
 
 
-
+app.use('/api/v1/reclamos-estados', v1ReclamosEstadoRouter);
+app.use('/api/v1/reclamos', v1ReclamosRouter);
 
 const puerto = process.env.PUERTO
 app.listen(puerto, () => {
