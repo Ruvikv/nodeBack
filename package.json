@@ -5,7 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1"
+=======
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+>>>>>>> c7bb597d256a062b0839a6299b052f690e023462
   },
   "keywords": [],
   "author": "",
@@ -14,15 +20,21 @@
     "apirest": "file:",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+<<<<<<< HEAD
     "express-session": "^1.18.0",
+=======
+>>>>>>> c7bb597d256a062b0839a6299b052f690e023462
     "handlebars": "^4.7.8",
     "mailer": "^0.6.7",
     "mysql2": "^3.11.2",
     "node": "file:",
     "nodemailer": "^6.9.15",
     "nodemon": "^3.1.4",
+<<<<<<< HEAD
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+=======
+>>>>>>> c7bb597d256a062b0839a6299b052f690e023462
     "path": "^0.12.7",
     "url": "^0.11.4"
   }

@@ -5,6 +5,7 @@ import handlebars from 'handlebars';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+<<<<<<< HEAD
 
 
 import {router as v1OficinasRouter } from './vs1/routes/oficinasRoutes.js'
@@ -39,7 +40,245 @@ app.use('/api/v1/reclamosEstados', v1ReclamosEstadoRouter)
 
 
 
+=======
+import { conexionDB } from './db/conexion.js';
+// middlewares
+import validateContentType from './middlewares/validateContentType.js';
+
+// rutas
+import { router as  v1ReclamosEstadoRouter } from './v1/routes/reclamosEstadosRoutes.js';
+import { router as v1ReclamosRouter } from './v1/routes/reclamosRoutes.js';
+
+dotenv.config()
+
+
+const app = express();
+app.use(express.json());
+app.use(validateContentType);
+
+app.get('/', (req, res) => {
+    res.json({'estado':true});
+});
+
+
+app.post('/notificacion', (req, res) => {
+    const correoDestino = req.body.correoElectronico;
+
+    const filename = fileURLToPath(import.meta.url)
+
+    
+    const dir = path.dirname(`${filename}`) 
+    
+
+
+    const plantilla = fs.readFileSync(path.join(dir, '/utiles/plantilla.hbs'), 'utf8')
+
+
+    const templete = handlebars.compile(plantilla)
+
+
+    const datos = {
+        nombre :'Sombrita Jr',
+        reclamo: '555666'
+    }
+    
+    const correoHtml = templete(datos)
+
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.CORREO,
+            pass: process.env.CONTRASENA
+        }
+    })
+    const mailOptions = {
+        /* from: correoDestino, */
+        to: process.env.CORREO,
+        subject: 'Reclamo de Sombrita Jr',
+        html: correoHtml,
+    }
+    //Envio
+    transporter.sendMail(mailOptions, (error,info) => {
+        if(error){
+            console.log(error);
+        } else {
+            console.log('Correo enviado:'+ info.response);
+            res.json({ mensaje: 'Correo enviado con éxito','estado:': true });
+            res.send(true)
+        }
+    })
+});
+
+
+
+// GET
+app.get('/reclamosestado', async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM `reclamosestado` WHERE activo = 1;'
+
+        const [result] = await conexionDB.query(sql)
+
+        res.status(200).json({estado: true,result})
+
+    }catch (err) {
+        console.error(err)
+        res.status(500).json({estado: false, mensaje: 'Error Interno'})
+    }
+});
+
+
+// GET ID
+app.get('/reclamosestado/:idReclamoEstado', async (req, res) => {
+    try {
+        const idReclamoEstado = req.params.idReclamoEstado;
+
+        const sql = 'SELECT * FROM reclamosestado WHERE activo = 1 AND idReclamoEstado = ?';
+
+        const [result] = await conexionDB.query(sql, [idReclamoEstado])
+
+        
+        /* console.log(result) */
+        if(result.length === 0){
+            res.status(404).json({ mensaje: 'Reclamo no encontrado' })
+            return;
+        }
+        
+
+        res.status(200).json(result)
+
+    }catch (err) {
+        console.error(err)
+        res.status(500).json({estado: false, mensaje: 'Error Interno'})
+    }
+});
+
+//PATCH
+app.patch('/reclamosestado/:idReclamoEstado', async (req, res) =>{
+    try{
+        const { descripcion, activo } = req.body;
+
+        if (!descripcion) {
+            return res.status(404).json({
+                mensaje: "Se requiere el campo descripción"    
+            })
+        }
+        
+        /* if (!activo) {
+            return res.status(404).json({
+                mensaje: "Se requiere el campo activo"    
+            })
+        } */
+
+        const idReclamoEstado = req.params.idReclamoEstado;
+
+        const sql = 'UPDATE reclamosestado SET descripcion = ? , activo = ?  WHERE idReclamoEstado = ?';
+        const [result] = await conexionDB.query(sql, [descripcion, activo, idReclamoEstado]);
+
+
+        /* if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "No se pudo modificadar."    
+            })
+        } */
+        
+        res.status(200).json({
+            mensaje: "Reclamo modificado"
+        });
+
+    }catch(err){
+        res.status(500).json({
+            mensaje: "Error interno."
+        })
+    }
+})
+
+
+
+// POST
+app.post('/reclamosestado', async (req, res) => {
+    try{
+
+        const {descripcion, activo} = req.body
+
+        if (descripcion === undefined) {
+            return res.status(404).json({
+                mensaje: "Se requiere el campo descripción"    
+            })
+        }
+        
+        if (activo === null) {
+            return res.status(404).json({
+                mensaje: "Se requiere el campo activo"    
+            })
+        }
+
+        const sql = 'INSERT INTO reclamosestado (descripcion, activo) VALUES (?,?)';
+        const [result] = await conexionDB.query(sql, [descripcion,activo])
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "No se pudo modificadar."    
+            })
+        }
+        
+        res.status(200).json({
+            mensaje: "Reclamo Añadido"
+        });
+
+    }catch (err) {
+        console.error(err)
+        res.status(500).json({estado: false, mensaje: 'Error Interno'})
+    }}
+)
+
+
+
+// Delete
+app.delete('/reclamosestado/:idReclamoEstado', async (req, res) => {
+    try{
+
+        const idReclamoEstado = req.params.idReclamoEstado;
+
+        if (idReclamoEstado === null){
+            return res.status(404).json({
+                mensaje: "Se requiere el campo identificador"
+            })
+        }
+
+        
+        const sql = 'DELETE FROM reclamosestado WHERE idReclamoEstado = ?;'
+        const [result] = await conexionDB.query(sql, [idReclamoEstado])
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                mensaje: "No se pudo Eliminar."    
+            })
+        }
+
+        res.status(200).json({
+            mensaje: "Reclamo Eliminado"
+        });
+        
+
+    }
+    catch (err) {
+        console.error(err)
+        res.status(500).json({estado: false, mensaje: 'Error Interno'})
+    }
+})
+
+
+
+app.use('/api/v1/reclamosestado', v1ReclamosEstadoRouter);
+app.use('/api/v1/reclamos', v1ReclamosRouter);
+
+>>>>>>> c7bb597d256a062b0839a6299b052f690e023462
 const puerto = process.env.PUERTO
 app.listen(puerto, () => {
     console.log(`escuchando en puerto ${puerto}`);
 })
+<<<<<<< HEAD
+=======
+
+>>>>>>> c7bb597d256a062b0839a6299b052f690e023462
