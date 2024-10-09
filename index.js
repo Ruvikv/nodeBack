@@ -13,6 +13,8 @@ import { router as v1AdministradoresRouter } from './vs1/routes/administradoresR
 import { router as v1ReclamosEstadoRouter } from './vs1/routes/reclamosEstadosRoutes.js';
 import validateContentType from './middlewars/validateContentType.js';
 
+import { router as v1tiposReclamosRouter } from './v1/routes/administradoresRoutes.js';
+
 
 
 
@@ -272,6 +274,7 @@ app.delete('/reclamosestado/:idReclamoEstado', async (req, res) => {
 
 app.use('/api/v1/reclamosestado', v1ReclamosEstadoRouter);
 app.use('/api/v1/reclamos', v1ReclamosRouter);
+app.use('/api/v1/tipos-reclamos', v1tiposReclamosRouter );
 
 >>>>>>> c7bb597d256a062b0839a6299b052f690e023462
 const puerto = process.env.PUERTO
