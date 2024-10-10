@@ -7,11 +7,23 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 
-//Rotas importadas
+//Rutas importadas
+
+// OFICINAS
 import {router as v1OficinasRouter } from './vs1/routes/oficinasRoutes.js';
+
+// ADMINISTRADORES
 import { router as v1AdministradoresRouter } from './vs1/routes/administradoresRoutes.js';
+
+// ADMIN RECLAMOS TIPO
+import { router as v1AdminReclamosTipoRouter } from './vs1/routes/adminReclamosTipoRoutes.js';
+
+// RECLAMOS ESTADOS
 import { router as v1ReclamosEstadoRouter } from './vs1/routes/reclamosEstadosRoutes.js';
+
+// MIDDLEWARS - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 import validateContentType from './middlewars/validateContentType.js';
+
 
 
 
@@ -19,12 +31,10 @@ dotenv.config()
 const app = express();
 app.use(validateContentType)
 app.use(express.json());
-app.use(validateContentType);
 
 
 
-
-// Rutas //
+//--------------------------------------------------- // ROUTES // --------------------------------------------------------------------//
 
 // OFICINAS
 app.use('/v1/Oficinas', v1OficinasRouter)
@@ -33,23 +43,27 @@ app.use('/v1/Oficinas', v1OficinasRouter)
 //ADMINISTRADORES
 app.use('/api/v1/administradores', v1AdministradoresRouter)
 //ADMINISTRADORES RECLAMOS TIPO
+app.use('/api/v1/adminReclamosTipo', v1AdminReclamosTipoRouter)
 
 
-//RECLAMOS ( LO QUE HIZO EL PROFE)
+//RECLAMOS     ( LO QUE HIZO EL PROFE )
 app.use('/api/v1/reclamosEstados', v1ReclamosEstadoRouter)
 
 
 
-/* 
-app.get('/', (req, res) => {
-    res.json({'estado':true});
-}); */
+
+
 
 
 const puerto = process.env.PUERTO
 app.listen(puerto, () => {
     console.log(`escuchando en puerto ${puerto}`);
 })
+
+
+
+
+
 
 
 /* app.post('/notificacion', (req, res) => {

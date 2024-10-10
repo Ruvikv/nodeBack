@@ -22,32 +22,4 @@ export default class AdministradoresServices {
 
     //----------------------------------------------------------------
 
-    obtenerTodos = () => {
-        return this.administradores.obtenerTodosLosTipos();
-    }
-
-    //----------------------------------------------------------------
-
-    obtenerPorId = (id) => {
-        return this.administradores.obtenerTipoPorId(id);
-    }
-
-    //----------------------------------------------------------------
-
-    crearTipo = (descripcion, activo) => {
-        return this.administradores.crearNuevoTipo(descripcion, activo);
-    }
-
-    //----------------------------------------------------------------
-
-    actualizarTipo = (id, descripcion, activo) => {
-        return this.administradores.actualizarTipo(id, descripcion, activo);
-    }
-
-    //----------------------------------------------------------------
-
-    eliminarTipo = (id) => {
-        return this.administradores.eliminarTipo(id);
-    }
-
 }
