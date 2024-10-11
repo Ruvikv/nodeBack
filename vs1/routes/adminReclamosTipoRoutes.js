@@ -14,7 +14,7 @@ router.post('/', adminReclamosTipoController.crear); // Funcionando ( descripcio
 
 router.patch('/:idReclamosTipo', adminReclamosTipoController.actualizar); //Funcionando ( id | descripcion, activo)
 
-router.patch('/delete/:idReclamosTipo', adminReclamosTipoController.eliminarLogicamente); //
+router.patch('/delete/:idReclamosTipo', adminReclamosTipoController.eliminarLogicamente); //Funciona ( activo )
 
 
 
