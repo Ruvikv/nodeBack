@@ -1,4 +1,4 @@
-import AdminReclamosTipo from "../database/adminRecamosTipo.js";
+import AdminReclamosTipo from "../database/adminReclamosTipo.js";
 
 
 export default class AdminReclamosTipoServices {
